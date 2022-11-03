@@ -10,22 +10,48 @@ import NotFound from './pages/NotFound';
 
 // https://ui.dev/react-router-handling-404-pages (Bruno Nabarrete t26)
 
-// state
-// função disabilitar botao
-// função adicionar usuário
+// 1 - state
+// 2 - função desabilitar botao
+// 3 - função adicionar usuário
+// 4 - loading
 
 class App extends React.Component {
   state = {
     loginName: '',
-    isDisabled: true,
+    isButtonDisabled: true,
+  };
+
+  // habilitar campo para edição e validação do botão
+  onHandleChange = (event) => {
+    const { target } = event;
+    this.setState({
+      [target.name]: target.value }, () => {
+      const {
+        loginName,
+      } = this.state;
+      const textoMinimo = 3;
+      const disableState = loginName.length < textoMinimo;
+      this.setState({ isButtonDisabled: disableState });
+    });
   };
 
   render() {
+    const {
+      loginName,
+      isButtonDisabled,
+    } = this.state;
     return (
       <>
         <p>TrybeTunes</p>
         <Switch>
-          <Route exact path="/" component={ Login } />
+          <Route
+            exact
+            path="/"
+            component={ Login }
+            loginName={ loginName }
+            isButtonDisabled={ isButtonDisabled }
+            onHandleChange={ this.onHandleChange }
+          />
           <Route exact path="/search" component={ Search } />
           <Route exact path="/album/:id" component={ Album } />
           <Route exact path="/favorites" component={ Favorites } />
