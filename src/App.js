@@ -8,9 +8,18 @@ import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
 
-// https://ui.dev/react-router-handling-404-pages
+// https://ui.dev/react-router-handling-404-pages (Bruno Nabarrete t26)
+
+// state
+// função disabilitar botao
+// função adicionar usuário
 
 class App extends React.Component {
+  state = {
+    loginName: '',
+    isDisabled: true,
+  };
+
   render() {
     return (
       <>
