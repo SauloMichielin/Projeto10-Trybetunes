@@ -6,4 +6,6 @@ class App extends React.Component {
   }
 }
 
+// Iniciando peleja
+
 export default App;
