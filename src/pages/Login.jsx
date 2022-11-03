@@ -6,7 +6,7 @@ class Login extends Component {
     const {
       loginName,
       isButtonDisabled,
-      createUser,
+      SaveUser,
       onHandleChange,
     } = this.props;
     return (
@@ -31,7 +31,7 @@ class Login extends Component {
               value="Entrar"
               id="login-submit-button"
               disabled={ isButtonDisabled }
-              onClick={ createUser }
+              onClick={ SaveUser }
               data-testid="login-submit-button"
             />
           </label>
@@ -44,14 +44,14 @@ class Login extends Component {
 Login.defaultProps = {
   loginName: '',
   isButtonDisabled: true,
-  createUser: '',
+  SaveUser: '',
   onHandleChange: '',
 };
 
 Login.propTypes = {
   loginName: PropTypes.string,
   isButtonDisabled: PropTypes.func,
-  createUser: PropTypes.func,
+  SaveUser: PropTypes.func,
   onHandleChange: PropTypes.func,
 };
 

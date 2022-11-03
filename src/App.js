@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
 import Search from './pages/Search';
 import Album from './pages/Album';
@@ -7,6 +7,8 @@ import Favorites from './pages/Favorites';
 import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
+import { createUser } from './services/userAPI';
+import Loading from './Component/Loading';
 
 // https://ui.dev/react-router-handling-404-pages (Bruno Nabarrete t26)
 
@@ -19,6 +21,8 @@ class App extends React.Component {
   state = {
     loginName: '',
     isButtonDisabled: true,
+    LoadingStatus: false,
+    redirect: false,
   };
 
   // habilitar campo para edição e validação do botão
@@ -35,35 +39,62 @@ class App extends React.Component {
     });
   };
 
+  SaveUser = async () => {
+    const { loginName } = this.state;
+    this.setState({
+      LoadingStatus: true,
+    }, async () => {
+      await createUser({ name: loginName });
+      this.setState({
+        LoadingStatus: false,
+        redirect: true,
+        loginName: '',
+      });
+    });
+  };
+
   render() {
     const {
       loginName,
       isButtonDisabled,
+      LoadingStatus,
+      redirect,
     } = this.state;
     return (
       <>
         <p>TrybeTunes</p>
         <Switch>
-          <Route
-            exact
-            path="/"
-            component={ Login }
-            loginName={ loginName }
-            isButtonDisabled={ isButtonDisabled }
-            onHandleChange={ this.onHandleChange }
-          />
-          <Route exact path="/search" component={ Search } />
-          <Route exact path="/album/:id" component={ Album } />
-          <Route exact path="/favorites" component={ Favorites } />
-          <Route exact path="/profile" component={ Profile } />
-          <Route exact path="/profile/edit" component={ ProfileEdit } />
-          <Route exact path="*" component={ NotFound } />
+          <Route exact path="/">
+            { LoadingStatus ? <Loading /> : <Login
+              loginName={ loginName }
+              isButtonDisabled={ isButtonDisabled }
+              onHandleChange={ this.onHandleChange }
+              SaveUser={ this.SaveUser }
+            />}
+            { redirect ? <Redirect to="/search" /> : ''}
+          </Route>
+          <Route exact path="/search">
+            <Search />
+          </Route>
+          <Route exact path="/album/:id">
+            <Album />
+          </Route>
+          <Route exact path="/favorites">
+            <Favorites />
+          </Route>
+          <Route exact path="/profile">
+            <Profile />
+          </Route>
+          <Route exact path="/profile/edit">
+            <ProfileEdit />
+          </Route>
+          <Route exact path="*">
+            <NotFound />
+          </Route>
         </Switch>
       </>
     );
   }
 }
-
-// Iniciando peleja
 
 export default App;
