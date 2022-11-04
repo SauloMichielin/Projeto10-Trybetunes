@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, Link } from 'react-router-dom';
 import Login from './pages/Login';
 import Search from './pages/Search';
 import Album from './pages/Album';
@@ -20,6 +20,8 @@ class App extends React.Component {
     isButtonDisabled: true,
     LoadingStatus: false,
     redirect: false,
+    listaArtistas: [],
+    nomeBusca: '',
   };
 
   // habilitar campo para edição e validação do botão
@@ -54,13 +56,16 @@ class App extends React.Component {
     });
   };
 
-  pesquisa = async () => {
+  pesquisa = async (e) => {
+    e.preventDefault();
     const { artistName } = this.state;
     this.setState({
       LoadingStatus: true,
     }, async () => {
-      await searchAlbumsAPI(artistName);
+      const results = await searchAlbumsAPI(artistName);
       this.setState({
+        nomeBusca: artistName,
+        listaArtistas: results,
         LoadingStatus: false,
         artistName: '',
         isButtonDisabled: true,
@@ -75,6 +80,8 @@ class App extends React.Component {
       isButtonDisabled,
       LoadingStatus,
       redirect,
+      listaArtistas,
+      nomeBusca,
     } = this.state;
     return (
       <>
@@ -95,11 +102,27 @@ class App extends React.Component {
               isButtonDisabled={ isButtonDisabled }
               onHandleChange={ this.onHandleChange }
               pesquisa={ this.pesquisa }
+              listaArtistas={ listaArtistas }
             />}
+            { listaArtistas.length === 0
+              && <h1>Nenhum álbum foi encontrado</h1> }
+            { listaArtistas.length > 0
+              && <h1>{ `Resultado de álbuns de: ${nomeBusca}` }</h1> }
+            <ul>
+              { LoadingStatus ? <Loading /> : (listaArtistas.map((Artista) => (
+                <li key={ Artista.collectionId }>
+                  <Link
+                    data-testid={ `link-to-album-${Artista.collectionId}` }
+                    to={ `/album/${Artista.collectionId}` }
+                  >
+                    <img src={ Artista.artworkUrl100 } alt={ Artista.collectionName } />
+                    { Artista.collectionName }
+                    { Artista.artistName }
+                  </Link>
+                </li>)))}
+            </ul>
           </Route>
-          <Route exact path="/album/:id">
-            <Album />
-          </Route>
+          <Route exact path="/album/:id" component={ Album } />
           <Route exact path="/favorites">
             <Favorites />
           </Route>

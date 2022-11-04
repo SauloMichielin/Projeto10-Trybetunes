@@ -48,6 +48,7 @@ Search.defaultProps = {
   isButtonDisabled: true,
   pesquisa: '',
   onHandleChange: '',
+  // listaArtistas: '',
 };
 
 Search.propTypes = {
@@ -55,6 +56,7 @@ Search.propTypes = {
   isButtonDisabled: PropTypes.func,
   pesquisa: PropTypes.func,
   onHandleChange: PropTypes.func,
+  // listaArtistas: PropTypes.func,
 };
 
 export default Search;
