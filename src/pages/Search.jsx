@@ -8,6 +8,7 @@ class Search extends Component {
       artistName,
       isButtonDisabled,
       onHandleChange,
+      pesquisa,
     } = this.props;
     return (
       <div data-testid="page-search">
@@ -32,7 +33,7 @@ class Search extends Component {
               value="Pesquisar"
               id="search-artist-button"
               disabled={ isButtonDisabled }
-              // onClick={ submit }
+              onClick={ pesquisa }
               data-testid="search-artist-button"
             />
           </label>
@@ -45,12 +46,14 @@ class Search extends Component {
 Search.defaultProps = {
   artistName: '',
   isButtonDisabled: true,
+  pesquisa: '',
   onHandleChange: '',
 };
 
 Search.propTypes = {
   artistName: PropTypes.string,
   isButtonDisabled: PropTypes.func,
+  pesquisa: PropTypes.func,
   onHandleChange: PropTypes.func,
 };
 

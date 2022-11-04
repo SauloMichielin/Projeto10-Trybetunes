@@ -9,6 +9,7 @@ import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
 import { createUser } from './services/userAPI';
 import Loading from './Component/Loading';
+import searchAlbumsAPI from './services/searchAlbumsAPI';
 
 // https://ui.dev/react-router-handling-404-pages (Bruno Nabarrete t26)
 
@@ -53,6 +54,20 @@ class App extends React.Component {
     });
   };
 
+  pesquisa = async () => {
+    const { artistName } = this.state;
+    this.setState({
+      LoadingStatus: true,
+    }, async () => {
+      await searchAlbumsAPI(artistName);
+      this.setState({
+        LoadingStatus: false,
+        artistName: '',
+        isButtonDisabled: true,
+      });
+    });
+  };
+
   render() {
     const {
       loginName,
@@ -79,6 +94,7 @@ class App extends React.Component {
               artistName={ artistName }
               isButtonDisabled={ isButtonDisabled }
               onHandleChange={ this.onHandleChange }
+              pesquisa={ this.pesquisa }
             />}
           </Route>
           <Route exact path="/album/:id">
