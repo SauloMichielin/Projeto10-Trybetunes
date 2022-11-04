@@ -12,14 +12,10 @@ import Loading from './Component/Loading';
 
 // https://ui.dev/react-router-handling-404-pages (Bruno Nabarrete t26)
 
-// 1 - state
-// 2 - função desabilitar botao
-// 3 - função adicionar usuário
-// 4 - loading
-
 class App extends React.Component {
   state = {
     loginName: '',
+    artistName: '',
     isButtonDisabled: true,
     LoadingStatus: false,
     redirect: false,
@@ -32,10 +28,13 @@ class App extends React.Component {
       [target.name]: target.value }, () => {
       const {
         loginName,
+        artistName,
       } = this.state;
-      const textoMinimo = 3;
-      const disableState = loginName.length < textoMinimo;
-      this.setState({ isButtonDisabled: disableState });
+      const textoMinimo1 = 3;
+      const textoMinimo2 = 2;
+      const disableState = loginName.length >= textoMinimo1
+        || artistName.length >= textoMinimo2;
+      this.setState({ isButtonDisabled: !disableState });
     });
   };
 
@@ -49,6 +48,7 @@ class App extends React.Component {
         LoadingStatus: false,
         redirect: true,
         loginName: '',
+        isButtonDisabled: true,
       });
     });
   };
@@ -56,6 +56,7 @@ class App extends React.Component {
   render() {
     const {
       loginName,
+      artistName,
       isButtonDisabled,
       LoadingStatus,
       redirect,
@@ -74,7 +75,11 @@ class App extends React.Component {
             { redirect ? <Redirect to="/search" /> : ''}
           </Route>
           <Route exact path="/search">
-            <Search />
+            { LoadingStatus ? <Loading /> : <Search
+              artistName={ artistName }
+              isButtonDisabled={ isButtonDisabled }
+              onHandleChange={ this.onHandleChange }
+            />}
           </Route>
           <Route exact path="/album/:id">
             <Album />
