@@ -41,18 +41,11 @@ class Login extends Component {
   }
 }
 
-Login.defaultProps = {
-  loginName: '',
-  isButtonDisabled: true,
-  SaveUser: '',
-  onHandleChange: '',
-};
-
 Login.propTypes = {
   loginName: PropTypes.string,
   isButtonDisabled: PropTypes.func,
   SaveUser: PropTypes.func,
   onHandleChange: PropTypes.func,
-};
+}.isRequired;
 
 export default Login;
