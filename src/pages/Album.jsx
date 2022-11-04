@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../Component/Header';
 import getMusics from '../services/musicsAPI';
+import MusicCard from '../Component/MusicCard';
 
 class Album extends Component {
   state = {
@@ -27,16 +28,25 @@ class Album extends Component {
         <h2>Album</h2>
         { console.log(musicas[1]) }
         { musicas.map((musica, i) => (
-          i === 0 && (
+          i === 0 ? (
             <>
               <img src={ musica.artworkUrl100 } alt={ musica.collectionCensoredName } />
               <br />
-              <spam key={ musica.artistName }>{ musica.artistName }</spam>
+              <spam key={ musica.artistName } data-testid="artist-name">
+                { musica.artistName }
+              </spam>
               <br />
-              <spam key={ musica.collectionCensoredName }>
-                { musica.collectionCensoredName }
+              <spam key={ musica.collectionName } data-testid="album-name">
+                { musica.collectionName }
               </spam>
             </>)
+            : (
+              <MusicCard
+                trackName={ musica.trackName }
+                previewUrl={ musica.previewUrl }
+              />
+            )
+          // MusicCard { musica.nomedamusica } { musica URL }
         )) }
       </div>
     );
