@@ -24,7 +24,7 @@ class Album extends Component {
       <div data-testid="page-album">
         <Header />
         <h2>Album</h2>
-        {/* { console.log(musicas[1]) } */}
+        { console.log(musicas[1]) }
         { musicas.map((musica, i) => (
           i === 0 && (
             <>
